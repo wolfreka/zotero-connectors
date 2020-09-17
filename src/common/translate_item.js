@@ -47,7 +47,7 @@ Zotero.Translate.ItemSaver = function(options) {
 	// Add listener for callbacks, but only for Safari or the bookmarklet. In Chrome, we
 	// (have to) save attachments from the inject page.
 	if(Zotero.Messaging && !Zotero.Translate.ItemSaver._attachmentCallbackListenerAdded
-			&& (Zotero.isBookmarklet || Zotero.isSafari)) {
+			&& (Zotero.isBookmarklet)) {
 		Zotero.Messaging.addMessageListener("attachmentCallback", function(data) {
 			var id = data[0],
 				status = data[1];
@@ -100,10 +100,6 @@ Zotero.Translate.ItemSaver.prototype = {
 			sessionID: this._sessionID,
 			uri: this._baseURI
 		};
-		if (Zotero.isSafari) {
-			// This is the best in terms of cookies we can do in Safari
-			payload.cookie = document.cookie;
-		}
 		payload.proxy = this._proxy && this._proxy.toJSON();
 		try {
 			var data = await Zotero.Connector.callMethodWithCookies("saveItems", payload)
